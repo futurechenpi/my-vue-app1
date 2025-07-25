@@ -1,8 +1,7 @@
 <script setup>
 import{getCurrentInstance, onMounted, ref,reactive} from 'vue'
 import * as echarts from 'echarts'
-import { useAllDataStore } from '../stores'
-const store =useAllDataStore()
+
 const {proxy}=getCurrentInstance()
 const getImageUrl=(user)=>{
   return new URL(`../assets/images/${user}.jpg`,import.meta.url).href
@@ -168,7 +167,7 @@ onMounted(()=>{
           <p class="leading-[30px] text-sm text-gray-400">
             上次登录时间:
             <span class="text-gray-500 ml-[60px]">
-              {{store.state.date}}
+              2025-06-26
             </span>
           </p>
           <p class="leading-[30px] text-sm text-gray-400">
@@ -205,18 +204,6 @@ onMounted(()=>{
             <p class="text-[25px]">￥{{item.value}}</p>
             <p class="text-[15px] text-center text-gray-400">￥{{item.name}}</p>
           </div>
-        </el-card>
-      </div>
-      <el-card class="top-echart">
-        <div ref="echart" style="height: 200px;"> </div>
-      </el-card>
-
-      <div class="mt-5 flex justify-between">
-        <el-card class="w-[48%]">
-          <div ref="userEchart" style="height: 160px;"></div>
-        </el-card>
-        <el-card class="w-[48%]">
-          <div ref="videoEchart" style="height: 160px;"></div>
         </el-card>
       </div>
     </el-col>

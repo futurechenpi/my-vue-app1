@@ -28,6 +28,6 @@ import CommonTab from '../components/CommonTab.vue';
     height: 100%;
   }
   .el-header{
-    background-color: #333;
+    background-color: #0088ff;
   }
 </style>

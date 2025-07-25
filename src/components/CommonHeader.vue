@@ -1,3 +1,11 @@
+<!--
+ * @Author: futurechenpi 2625765150@qq.com
+ * @Date: 2025-06-27 14:43:13
+ * @LastEditors: futurechenpi 2625765150@qq.com
+ * @LastEditTime: 2025-07-25 15:38:08
+ * @FilePath: \my-vue-app1\src\components\CommonHeader.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
     <div class="header">
         <div class="l-container">
@@ -16,7 +24,7 @@
                 </span>
                 <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item>个人中心</el-dropdown-item>
+                    <el-dropdown-item @click="handleMenu('personal','个人中心','/personal')">个人中心</el-dropdown-item>
                     <el-dropdown-item @click="handleLoginOut">退出</el-dropdown-item>
                 </el-dropdown-menu>
                 </template>
@@ -43,7 +51,14 @@ const handleLoginOut=()=>{
     router.push('/login')
 }
 const current=computed(()=>store.state.currentMenu)
-
+const handlePersonal=()=>{
+    router.push('/personal')
+}
+const handleMenu=(name,label,path)=>{
+    const item={name,label,path}
+    router.push(path)
+    store.addTag(item)
+}
 </script>
 <style lang="less" scoped>
 .header{
@@ -52,7 +67,7 @@ const current=computed(()=>store.state.currentMenu)
     align-items: center;
     width: 100%;
     height: 100%;
-    background-color: #333;
+    // background-color: #0088ff;
 }
 .icons{
     width: 20px;

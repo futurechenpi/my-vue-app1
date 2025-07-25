@@ -1,7 +1,16 @@
+<!--
+ * @Author: futurechenpi 2625765150@qq.com
+ * @Date: 2025-06-30 12:37:39
+ * @LastEditors: futurechenpi 2625765150@qq.com
+ * @LastEditTime: 2025-07-25 15:46:00
+ * @FilePath: \my-vue-app1\src\views\Login.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <script setup>
 import { getCurrentInstance, reactive } from 'vue';
 import {useAllDataStore}from '@/stores'
 import { useRouter } from 'vue-router';
+import dayjs from 'dayjs';
 const loginForm=reactive({
   username:'',
   password:''
@@ -12,9 +21,10 @@ const router =useRouter()
 const handleLogin=async()=>{
   const res = await proxy.$api.getMenu(loginForm)
   //拿到菜单后 在哪显示
-  store.updateMenuList(res.menuList)
-  store.state.token=res.token
-  store.addMenu(router)
+  store.updateMenuList(res.menuList)//将拿到的数据传给状态管理库，用于addMenu函数的判断
+  store.state.token=res.token//将令牌赋值给状态管理库中的数据
+  store.addMenu(router)//通过路由添加菜单，router参数用于移除上次的路由和添加路由
+  store.state.date=dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss')
   router.push("/home")
 }
 </script>

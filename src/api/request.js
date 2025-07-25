@@ -16,7 +16,6 @@ service.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 service.interceptors.response.use((res)=>{
-    
     const{code,data,msg}=res.data
     if(code===200){
         return data
@@ -39,7 +38,7 @@ function request(options){
     if(typeof options.mock!=='undefined'){
         isMock=options.mock;//api控制
     }
-
+    console.group(isMock)
     //针对环境做一个处理
     if(config.env==='prod'){
         //不能用mock

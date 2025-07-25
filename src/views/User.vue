@@ -1,6 +1,6 @@
 <script setup>
 import { ElMessageBox,ElMessage } from 'element-plus'
-import {ref,getCurrentInstance,onMounted, reactive, nextTick} from 'vue'
+import {ref,getCurrentInstance,onMounted, reactive, nextTick, computed} from 'vue'
 const tableData = ref([])
 const {proxy} = getCurrentInstance()
 const getUserData= async()=>{
@@ -79,15 +79,17 @@ const rules=reactive({
 })
 const handleClose=()=>{
   //获取表单重置表单
-  dialogVisible.value=false;
   proxy.$refs['userForm'].resetFields()
+  dialogVisible.value=false;
+  
 }
 const handleCancel=()=>{
-  dialogVisible.value=false;
   proxy.$refs['userForm'].resetFields()
+  dialogVisible.value=false;
 }
 const handleAdd=()=>{
   dialogVisible.value=true
+  console.log(formUser)
   action.value='add'
 }
 const timeFormat=(time)=>{
@@ -112,8 +114,8 @@ const onSubmit=()=>{
         res=await proxy.$api.editUser(formUser)
       }
       if(res){
+        proxy.$refs['userForm'].resetFields()//清空
         dialogVisible.value=false
-        proxy.$refs['userForm'].resetFields()
         getUserData()
       }
     }else{
@@ -126,10 +128,11 @@ const onSubmit=()=>{
   })
 }
 const handleEdit=(val)=>{
+  
   action.value='edit'
   dialogVisible.value=true
-  nextTick(()=>{
-    Object.assign(formUser,{...val,sex:''+val.sex})
+  nextTick(()=>{//先按编辑的话，数据会清不掉，只能用nexttick解决,因为表单一开始是没加载出来的，如果直接赋值会导致底层修改不了
+  Object.assign(formUser,{...val,sex:''+val.sex})//为了给空白的填表页面，填上当前要编辑用户的信息
   })
 }
 onMounted(()=>{
@@ -138,7 +141,7 @@ onMounted(()=>{
 </script>
 
 <template>
-  <div class="user-header">
+  <div class="flex justify-between">
     <el-button type="primary" @click="handleAdd">新增</el-button>
     <el-form :inline="true" :model="formInline">
       <el-form-item label="请输入">
@@ -149,8 +152,12 @@ onMounted(()=>{
       </el-form-item>
     </el-form>
   </div>
-  <div class="table">
-    <el-table :data="tableData" style="width: 100%">
+  <div class="relative h-[520px]">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      class="w-full h-[500px]"
+      >
       <el-table-column 
         v-for="item in tableLabel"
         :key="item.prop"
@@ -168,7 +175,7 @@ onMounted(()=>{
       </el-table-column>
     </el-table>
     <el-pagination 
-      class="pager"
+      class="absolute right-[10px] bottom-[30px]"
       background 
       layout="prev, pager, next" 
       size="small"
@@ -201,8 +208,8 @@ onMounted(()=>{
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item class="select-clearn" label="性别" prop="sex">
-            <el-select  v-model="formUser.sex" placeholder="请选择">
+          <el-form-item class="w-[220px]" label="性别" prop="sex">
+            <el-select  v-model="formUser.sex" placeholder="请选择" >
               <el-option label="男" value="1" />
               <el-option label="女" value="0" />
             </el-select>

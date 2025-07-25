@@ -15,7 +15,8 @@ function initState(){
         currentMenu:null,
         menuList:[],
         token:"",
-        routerList:[]
+        routerList:[],
+        date:""
     };
     
 }
@@ -33,7 +34,7 @@ export const useAllDataStore = defineStore('allData', () => {
     localStorage.setItem("store",JSON.stringify(newObj))//对象转换为 JSON 字符串后存储到浏览器的本地存储中，键名为store。
   },{deep:true})//表示进行深度监听，即对象内部属性的变化也会被监听到。
 
-  function selectMenu(val){//标签的添加
+  function addTag(val){//标签的添加
     if(val.name==='home'){
       state.value.currentMenu='home';
     }else{
@@ -49,8 +50,8 @@ export const useAllDataStore = defineStore('allData', () => {
   function updateMenuList(val){//选择更新两个菜单还是四个
     state.value.menuList=val
   }
-  function addMenu(router,type){//添加路由
-    if(type==='refresh'){
+  function addMenu(router,type){//添加路由,不添加也行
+    if(type==='refresh'){//持久化的数据导入到浏览器
       if(JSON.parse(localStorage.getItem('store'))){
         state.value=JSON.parse(localStorage.getItem('store'))
         //
@@ -62,37 +63,35 @@ export const useAllDataStore = defineStore('allData', () => {
     const menu=state.value.menuList;
     const module =import.meta.glob('../views/**/*.vue');
     const routeArr=[]
-    menu.forEach(item=>{//给menuList加上component
-      if(item.children){
-        item.children.forEach(val=>{
-          let url =`../views/${val.url}.vue`;
-          val.component=module[url];
-          routeArr.push(...item.children)
-        })
-      }else{
-        let url=`../views/${item.url}.vue`
-        item.component=module[url];
-        routeArr.push(item)
+    // menu.forEach(item=>{//给menuList加上component
+    //   if(item.children){
+    //     item.children.forEach(val=>{
+    //       let url =`../views/${val.url}.vue`;
+    //       val.component=module[url];
+    //       routeArr.push(...item.children)
+    //     })
+    //   }else{
+    //     let url=`../views/${item.url}.vue`
+    //     item.component=module[url];
+    //     routeArr.push(item)
         
-      }
-    })
-    let routers=router.getRoutes()
-    routers.forEach(item=>{//移除上次登录的路由
-      if(item.name=='main'|| item.name=='login'|| item.name=='404'){
-        return
-      }else{
-        router.removeRoute(item.name)
-      }
-    })
-    routeArr.forEach(item=>{//插入路由
-      state.value.routerList.push(router.addRoute("main",item))
-      
-    })
+    //   }
+    // })
+    // let routers=router.getRoutes()
+    // routers.forEach(item=>{//移除上次登录的路由
+    //   if(item.name=='main'|| item.name=='login'|| item.name=='404'){
+    //     return
+    //   }else{
+    //     router.removeRoute(item.name)
+    //   }
+    // })
+    // routeArr.forEach(item=>{//插入路由
+    //   state.value.routerList.push(router.addRoute("main",item))
+    // })
     
   }
   function clean(){
     state.value.routerList.forEach(item=>{
-      console.log(item)
       if(item) item();//因为这个里面是一个叫removeRoute的函数
     });
     state.value =initState();
@@ -101,7 +100,7 @@ export const useAllDataStore = defineStore('allData', () => {
   }
   return { 
     state,
-    selectMenu,
+    addTag,
     undateTags,
     updateMenuList,
     addMenu,

@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import "@/assets/less/index.less";
+//import "@/assets/less/index.less";
 import router from"./router/index.js";
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
@@ -18,7 +18,6 @@ router.beforeEach((to,from)=>{//to到哪里去，from从哪里来
     
      return {name:"/login"};
   }
-  console.log(isRoute(to))
   if(!isRoute(to)){
   
     return {name:'404'}

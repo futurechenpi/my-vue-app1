@@ -11,3 +11,4 @@ Mock.mock(/api\/user\/deleteUser/,'get',userApi.deleteUser);
 Mock.mock(/api\/user\/addUser/,'post',userApi.createUser);
 Mock.mock(/api\/user\/editUser/,'post',userApi.updateUser);
 Mock.mock(/api\/permission\/getMenu/,'post',menuApi.getMenu);
+//mock匹配的是api.js里面return的url

@@ -42,6 +42,7 @@ export default {
    */
   getUserList: (config) => {
       					  //limit默认是10，因为分页器默认也是一页10个
+    console.log(config.url)
     const { name, page = 1, limit = 10 } = param2Obj(config.url)
     
       

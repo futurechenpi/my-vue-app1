@@ -1,21 +1,30 @@
 <template>
-    <el-aside :width="width">
+    <el-aside
+      :width="width"
+      class="h-full"
+    >
         <el-menu
-        background-color="#545c64"
-        text-color="#fff"
+        class="border-r-0"
+        text-color="#000"
         :collapse="isCollapse"
         :collapse-transition="false"
         :default-active="activeMenu"
       >
-        <h3 v-show="!isCollapse">通用后台管理</h3>
-        <h3 v-show="isCollapse">后台</h3>
+        <h3 
+          v-show="!isCollapse"
+          class="text-center text-2xl font-bold mt-1"
+        >通用后台管理</h3>
+        <h3 
+          v-show="isCollapse"
+          class="text-center text-2xl font-bold mt-1"
+        >后台</h3>
         <el-menu-item 
             v-for="item in noChildren"
             :index="item.path"
             :key="item.path"
             @click="handleMenu(item)"
         >
-          <component class="icons" :is="item.icon"></component>
+          <component class="w-[18px] h-[18px] mr-[5px]" :is="item.icon"></component>
           <span>{{ item.label }}</span>
         </el-menu-item>
 
@@ -25,7 +34,7 @@
             :key="item.path"
         >
           <template #title>
-            <component class="icons" :is="item.icon"></component>
+            <component class="w-[18px] h-[18px] mr-[5px]" :is="item.icon"></component>
             <span>{{ item.label }}</span>
           </template>
           <el-menu-item-group>
@@ -35,7 +44,7 @@
                 :key="subItem.path"
                 @click="handleMenu(subItem)"
             >
-                <component class="icons" :is="subItem.icon"></component>
+                <component class="w-[18px] h-[18px] mr-[5px]" :is="subItem.icon"></component>
                 <span>{{ subItem.label }}</span>
             </el-menu-item>
           </el-menu-item-group>
@@ -106,10 +115,13 @@ const route=useRoute()
 const activeMenu=computed(()=>route.path)
 const handleMenu=(item)=>{
     router.push(item.path)
-    store.selectMenu(item)
+    store.addTag(item)
 }
 </script>
-<style lang="less" scoped>
+<style scoped>
+
+</style>
+<!-- <style lang="less" scoped>
 .icons{
     width: 18px;
     height: 18px;
@@ -119,13 +131,13 @@ const handleMenu=(item)=>{
     border-right:none ;
     h3{
         line-height: 48px;
-        color: #fff;
+        color: #000;
         text-align: center;
     }
     
 }
 .el-aside{
     height: 100%;
-    background-color: #545c64;
+    border: #000;
 }
-</style>
+</style> -->
